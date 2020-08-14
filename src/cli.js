@@ -2,14 +2,14 @@ import inquirer from 'inquirer';
 import yargs from 'yargs';
 import chalk from 'chalk';
 import pjson from '../package.json';
-export async function cli(args){
+import {createProject} from './main.js';
 
-    // options = await configurationPrompt(argv);
-    // console.log(chalk.bold('Imperial Visualisations CLI') + chalk.yellow(' v' +pjson.version))
-    // console.log(argv)
+export async function cli(argv){
+    console.clear();
+    console.log(chalk.bold('Imperial Visualisations CLI') + chalk.yellow(' v' +pjson.version))
+    let options = await configurationPrompt(argv);
+    createProject(options);
 }
-
-
 
 
 const templateChoices =[
@@ -23,6 +23,10 @@ const additionalModules = [
     {name:'D3 (popular library for creating visualisations)',value:'d3',short:'D3'},
     {name:'p5.js (legacy library for 2D graphics',value:'p5',short:'p5.js'}
 ]
+const legacyChoices = [
+    {name:"Basic legacy template with no VueJS",value:"basic",short:"Basic Template"},
+    {name:"Advanced legacy template with VueJS and multipage scrolling",value:"advanced",short:"Advanced Template"}
+]
 
 async function configurationPrompt(options){
     const questions = [
@@ -34,10 +38,19 @@ async function configurationPrompt(options){
             default:templateChoices[0]
         },
         {
+            type:'list',
+            name:"legacyTempVersion",
+            message:"Which version of the legacy template do you wish to use?",
+            choices: legacyChoices,
+            default: 0,
+            when: (answers) => answers.template === 'legacy'
+        },
+        {
             type:'checkbox',
             name:'additionalModules',
             message:'Please select additional modules that you wish to enable for this project:',
-            choices: additionalModules
+            choices: additionalModules,
+            when: (answers) => answers.template !== 'legacy'
         }
     ];
     if(!options.git){
@@ -53,7 +66,8 @@ async function configurationPrompt(options){
         ...options,
         template: options.template || answers.template,
         git: options.git || answers.git,
-        additionalModules: options.additionalModules || answers.additionalModules
+        additionalModules: options.additionalModules || answers.additionalModules,
+        legacyTempVersion: options.legacyTempVersion || answers.legacyTempVersion
     }
 
 }
