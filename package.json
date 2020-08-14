@@ -1,0 +1,26 @@
+{
+  "name": "@impvis/cli",
+  "version": "0.1.0",
+  "description": "The Command Line Interface (CLI) to automatically create templates for the Imperial Visualisations project!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "@impvis/create-impvis": "./bin/create-impvis.js",
+    "create-impvis": "./bin/create-impvis.js"
+  },
+  "keywords": [
+    "cli",
+    "impvis"
+  ],
+  "author": "Robert King",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "esm": "^3.2.25",
+    "inquirer": "^7.3.3",
+    "ncp": "^2.0.0",
+    "yargs": "^15.4.1"
+  }
+}
