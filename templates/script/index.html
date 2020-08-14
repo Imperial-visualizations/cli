@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{projectName}}</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/@impvis/components"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@impvis/components/dist/impvis-components.css"/>
+    {{#each additionalModules}}
+        {{#if_eq this 'katex' }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+        {{/if_eq}}
+    {{/each}}
+
+    <style>
+        .iv-welcome-message{
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+    </style>
+    
+</head>
+<body>
+    <div id="app">
+        <iv-title-bar>\{{projectName}}</iv-title-bar>
+        <iv-visualisation>
+            <div class="iv-welcome-message">
+                <img src='./assets/ImpVis-logo.png' alt="ImpVisLogo" height="50"/>
+                <h1> Welcome to Imperial Visualisations!</h1>
+                <p> Your project, {{projectName}} has succesfully been set up using a script tag import!</p>
+                <p> There is a vue instance up and running!</p>
+            </div>
+        </iv-visualisation>
+    </div>
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data(){
+                return {
+                    projectName:"{{projectName}}"
+                }
+            }
+        });
+    </script>
+</body>
+</html>

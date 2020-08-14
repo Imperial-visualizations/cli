@@ -40,7 +40,6 @@ const tasks = [
     },
     {
         title:"Generate index.html file",
-        enabled: (ctx) => ctx.template === 'legacy',
         task: (ctx) => renderHTMLFile(ctx)
     },
     {
@@ -49,6 +48,14 @@ const tasks = [
         task: (ctx) => execa('git',['init'])
     }
 ];
+
+Handlebars.registerHelper("if_eq",function(a,b,opts) {
+    if( a == b){
+        return opts.fn(this);
+    }else{
+        return opts.inverse(this)
+    }
+});
 
 async function copyTemplateFiles(options){
     return copy(options.templateDir,options.targetDir,{
@@ -80,17 +87,20 @@ async function getTemplateDir(localTemplateDir){
 export async function renderHTMLFile(options,file='index.html'){
         let indexFile = path.join(options.targetDir,file);
         let content = await open(indexFile,'utf-8')
+    
         await write( indexFile,Handlebars.compile(content)(options));
 }
 
 export async function createProject(options){
     if(options.verbose){
-        console.log('%s' + options, INFO);
+        console.log('%s Object state:', INFO);
+        console.log(options)
     }
     switch(options.template){
         case 'node':
             break;
         case 'script':
+            options.templateDir = await getTemplateDir('../../templates/script')
             break;
         case 'legacy':
             if(options.legacyTempVersion === 'basic'){
@@ -106,8 +116,12 @@ export async function createProject(options){
     try{
         options = await (new listr(tasks)).run(options);
     } catch(err){
-        console.log('%s Something has gone wrong:' + err, ERROR);
-        console.log('%s Aborting and Rolling back changes...',ERROR)
+        console.log('%s Something has gone wrong:\n      ' + err.stack, ERROR);
+        if(options.verbose){
+            console.log('%s Current options state:',INFO);
+            console.log(options);
+        }
+        console.log('%s Aborting. Rolling back changes...',ERROR)
         process.chdir(__dirname);
         if(typeof options.targetDir !== 'undefined')  await promisify(rimraf)(options.targetDir);
         process.exit(1);
