@@ -4,12 +4,9 @@ import ncp from 'ncp';
 import path from 'path';
 import execa from 'execa';
 import chalk from 'chalk';
-import { option } from 'yargs';
 import Handlebars from 'handlebars'
 import rimraf from 'rimraf';
 import listr from 'listr';
-import { create } from 'domain';
-import { timingSafeEqual } from 'crypto';
 
 const access = promisify(fs.access);
 const mkdir = promisify(fs.mkdir)
