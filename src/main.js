@@ -2,6 +2,7 @@ import {promisify} from 'util';
 import fs from 'fs';
 import ncp from 'ncp';
 import path from 'path';
+import execa from 'execa';
 import chalk from 'chalk';
 import { option } from 'yargs';
 import Handlebars from 'handlebars'
@@ -37,6 +38,16 @@ const tasks = [
             process.chdir(ctx.targetDir);
         }
     },
+    {
+        title:"Generate index.html file",
+        enabled: (ctx) => ctx.template === 'legacy',
+        task: (ctx) => renderHTMLFile(ctx)
+    },
+    {
+        title:"Initalise git repository",
+        enabled:(ctx) => ctx.git,
+        task: (ctx) => execa('git',['init'])
+    }
 ];
 
 async function copyTemplateFiles(options){
@@ -87,12 +98,6 @@ export async function createProject(options){
             }else if(options.legacyTempVersion === 'advanced'){
                 options.templateDir = await getTemplateDir('../../templates/legacy/advanced')
             }
-            tasks.push(
-                {
-                    title:"Generate index.html file",
-                    task: (ctx) => renderHTMLFile(ctx)
-                }
-            )
             break;
         default:
             console.log('%s Something has gone very wrong. Quitting...',ERROR);
