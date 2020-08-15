@@ -17,7 +17,9 @@
   "author": "Robert King",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "boxen": "^4.2.0",
     "chalk": "^4.1.0",
+    "compare-versions": "^3.6.0",
     "esm": "^3.2.25",
     "execa": "^4.0.3",
     "handlebars": "^4.7.6",
