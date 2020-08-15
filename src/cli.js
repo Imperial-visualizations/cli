@@ -4,9 +4,11 @@ import chalk from 'chalk';
 import pjson from '../package.json';
 import {createProject} from './main.js';
 
+
 export async function cli(argv){
     console.clear();
-    console.log(chalk.bold('Imperial Visualisations CLI') + chalk.yellow(' v' +pjson.version))
+    console.log(chalk.bold('✨ Imperial Visualisations CLI') + chalk.yellow(' v' +pjson.version))
+    console.log('🎨 ' + chalk.yellow.bold("Creating Project >> ") + chalk.underline(argv.projectName) + "\n");
     let options = await configurationPrompt(argv);
     createProject(options);
 }
@@ -18,7 +20,8 @@ const templateChoices =[
     {name:'Legacy project',value:'legacy',short:'Legacy Project'}
 ]
 const additionalModules = [
-    {name:'ESLint + Vue Plugin (Linting)',value:'eslint',short:"ESLint",checked:true},
+    {name:'ESLint + Vue Plugin (Linting)',value:'eslint',short:"ESLint",checked:true,nodeOnly:true},
+    {name:'Babel (preprocessor for backwards compatiblity)',value:'babel',short:"Babel",checked:true,nodeOnly:true},
     {name:'Three.js (3D graphics support)', value:'three',short:'Three'},
     {name:'Katex (equation rendering support)',value:'katex',checked:true,short:'Katex'},
     {name:'D3 (popular library for creating visualisations)',value:'d3',short:'D3'},
@@ -50,7 +53,7 @@ async function configurationPrompt(options){
             type:'checkbox',
             name:'additionalModules',
             message:'Please select additional modules that you wish to enable for this project:',
-            choices: additionalModules,
+            choices: (answers) =>  additionalModules.filter(m => !(m.nodeOnly && answers.template !== 'node')),
             when: (answers) => answers.template !== 'legacy'
         }
     ];
