@@ -1,0 +1,40 @@
+{
+    "name": "{{projectName}}",
+    "version": "0.1.0",
+    "private":true,
+    "bin": {
+      "serve": "vue-cli-service serve",
+      "build": "vue-cli-service build",
+      "lint": "vue-cli-service lint"
+    },
+    "keywords": [
+      "impvis"
+    ],
+    "author": "Robert King",
+    "license": "BSD-3-Clause",
+    "dependencies": {
+        "core-js": "^3.6.5",
+        "vue": "^2.6.11",
+        "@impvis/components":"^0.2.0"
+    },
+    "devDependencies": {
+        "vue-template-compiler": "^2.6.11"
+    },
+    {{#if eslint}}
+    "eslintConfig": {
+      "root": true,
+      "env": {
+        "node": true
+      },
+      "extends": [
+          "plugin:vue/essential",
+        "eslint:recommended"
+      ],
+      "parserOptions": {
+        "parser": "babel-eslint"
+        },
+      "rules": {}
+    }
+    {{/if}}
+  }
+  

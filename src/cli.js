@@ -18,6 +18,7 @@ const templateChoices =[
     {name:'Legacy project',value:'legacy',short:'Legacy Project'}
 ]
 const additionalModules = [
+    {name:'ESLint + Vue Plugin (Linting)',value:'eslint',short:"ESLint",checked:true},
     {name:'Three.js (3D graphics support)', value:'three',short:'Three'},
     {name:'Katex (equation rendering support)',value:'katex',checked:true,short:'Katex'},
     {name:'D3 (popular library for creating visualisations)',value:'d3',short:'D3'},

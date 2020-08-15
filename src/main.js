@@ -7,7 +7,6 @@ import chalk from 'chalk';
 import Handlebars from 'handlebars'
 import rimraf from 'rimraf';
 import listr from 'listr';
-
 const access = promisify(fs.access);
 const mkdir = promisify(fs.mkdir)
 
@@ -19,6 +18,14 @@ const write = promisify(fs.writeFile);
 const INFO = chalk.bold.blue('INFO');
 const ERROR = chalk.bold.red('ERROR')
 const DONE = chalk.bold.green("DONE")
+
+const eslintInstall = [
+    '@vue/cli-plugin-babel',
+    '@vue/cli-plugin-eslint',
+    '@vue/cli-service',
+    'eslint',
+    'eslint-plugin-vue'
+]
 
 const tasks = [
     {
@@ -32,12 +39,40 @@ const tasks = [
         title:"Copy project files",
         task: async (ctx) => {
             await copyTemplateFiles(ctx);
-            process.chdir(ctx.targetDir);
+            process.chdir(ctx.targetDir); 
         }
     },
     {
         title:"Generate index.html file",
-        task: (ctx) => renderHTMLFile(ctx)
+        enabled: (ctx) => ctx.template !== 'node',
+        task: (ctx) => renderFile(ctx)
+    },
+    {
+        title:"Install core project dependencies",
+        enabled: (ctx) => ctx.template == 'node',
+        task: async (ctx) => {
+            await renderFile(ctx,'package.json') //Render package json
+            const {stdout} = await execa('npm',['install'])
+
+        }
+    },
+    {
+        title:"Install additional dependencies",
+        enabled: (ctx) => ctx.template == 'node' && ctx.additionalModules.length > 0,
+        task: async (ctx,task) => {
+            for(let i = 0; i < ctx.additionalModules.length; i++){
+                task.output = `(${i+1}/${ctx.additionalModules.length}) Installing ${ctx.additionalModules[i]}`
+                if(ctx.additionalModules[i] == 'three'){
+                    await execa('npm',['install','@impvis/threejscomponents'])
+                    await execa('npm',['install','three'])
+                }
+                else if(ctx.additionalModules[i] == 'eslint'){
+                    await execa('npm',['install','-D', ...eslintInstall])
+                } else{
+                    await execa('npm',['install',ctx.additionalModules[i]])
+                }
+            }
+        }
     },
     {
         title:"Initalise git repository",
@@ -81,7 +116,7 @@ async function getTemplateDir(localTemplateDir){
     return templateDir;
 }
 
-export async function renderHTMLFile(options,file='index.html'){
+export async function renderFile(options,file='index.html'){
         let indexFile = path.join(options.targetDir,file);
         let content = await open(indexFile,'utf-8')
     
@@ -93,8 +128,10 @@ export async function createProject(options){
         console.log('%s Object state:', INFO);
         console.log(options)
     }
+    options.eslint = options.additionalModules.indexOf('eslint') > -1
     switch(options.template){
         case 'node':
+            options.templateDir = await getTemplateDir('../../templates/node')
             break;
         case 'script':
             options.templateDir = await getTemplateDir('../../templates/script')
