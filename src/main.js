@@ -68,6 +68,9 @@ const tasks = [
                 }
                 else if(ctx.additionalModules[i] == 'eslint'){
                     await execa('npm',['install','-D', ...eslintInstall])
+                }
+                else if(ctx.additionalModules[i] == 'babel'){
+                    await execa('npm',['install','-D','babel','babel-eslint'])
                 } else{
                     await execa('npm',['install',ctx.additionalModules[i]])
                 }
