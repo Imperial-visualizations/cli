@@ -33,7 +33,7 @@
       "parserOptions": {
         {{#if babel}}
         "parser": "babel-eslint"
-        {{/if babel}}
+        {{/if}}
         },
       "rules": {}
     }
