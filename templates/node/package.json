@@ -18,23 +18,24 @@
         "@impvis/components":"^0.2.0"
     },
     "devDependencies": {
-        "vue-template-compiler": "^2.6.11"
-    },
+        "vue-template-compiler": "^2.6.11",
+        "@vue/cli-service":"^4.5.3"
+    }
     {{#if eslint}}
-    "eslintConfig": {
+    ,"eslintConfig": {
       "root": true,
       "env": {
         "node": true
       },
       "extends": [
           "plugin:vue/essential",
-        "eslint:recommended"
+          "eslint:recommended"
       ],
       "parserOptions": {
         {{#if babel}}
         "parser": "babel-eslint"
         {{/if}}
-        },
+      },
       "rules": {}
     }
     {{/if}}

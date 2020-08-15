@@ -20,9 +20,7 @@ const ERROR = chalk.bold.red('ERROR')
 const DONE = chalk.bold.green("DONE")
 
 const eslintInstall = [
-    '@vue/cli-plugin-babel',
     '@vue/cli-plugin-eslint',
-    '@vue/cli-service',
     'eslint',
     'eslint-plugin-vue'
 ]
@@ -67,10 +65,13 @@ const tasks = [
                     await execa('npm',['install','three'])
                 }
                 else if(ctx.additionalModules[i] == 'eslint'){
+                    if(ctx.babel){
+                        eslintInstall.push('babel-eslint')
+                    }
                     await execa('npm',['install','-D', ...eslintInstall])
                 }
                 else if(ctx.additionalModules[i] == 'babel'){
-                    await execa('npm',['install','-D','babel','babel-eslint'])
+                    await execa('npm',['install','-D','babel','@vue/cli-plugin-babel'])
                 } else{
                     await execa('npm',['install',ctx.additionalModules[i]])
                 }
