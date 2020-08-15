@@ -132,6 +132,7 @@ export async function createProject(options){
         console.log(options)
     }
     options.eslint = options.additionalModules.indexOf('eslint') > -1
+    options.babel = options.additionalModules.indexOf('babel') > -1
     switch(options.template){
         case 'node':
             options.templateDir = await getTemplateDir('../../templates/node')
