@@ -7,6 +7,7 @@ import chalk from 'chalk';
 import Handlebars from 'handlebars'
 import rimraf from 'rimraf';
 import listr from 'listr';
+
 const access = promisify(fs.access);
 const mkdir = promisify(fs.mkdir)
 
@@ -79,7 +80,7 @@ const tasks = [
         }
     },
     {
-        title:"Initalise git repository",
+        title:"Initialize git repository",
         enabled:(ctx) => ctx.git,
         task: (ctx) => execa('git',['init'])
     }
@@ -132,8 +133,10 @@ export async function createProject(options){
         console.log('%s Object state:', INFO);
         console.log(options)
     }
-    options.eslint = options.additionalModules.indexOf('eslint') > -1
-    options.babel = options.additionalModules.indexOf('babel') > -1
+    if(options.template !== 'legacy'){
+        options.eslint = options.additionalModules.indexOf('eslint') > -1
+        options.babel = options.additionalModules.indexOf('babel') > -1
+    }
     switch(options.template){
         case 'node':
             options.templateDir = await getTemplateDir('../../templates/node')
@@ -152,7 +155,7 @@ export async function createProject(options){
             console.log('%s Something has gone very wrong. Quitting...',ERROR);
             process.exit(1);
     }
-    try{
+    try {
         options = await (new listr(tasks)).run(options);
     } catch(err){
         console.log('%s Something has gone wrong:\n      ' + err.stack, ERROR);
