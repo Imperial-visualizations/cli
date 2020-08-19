@@ -35,7 +35,8 @@ const additionalModules = [
     {name:'Three.js (3D graphics support)', value:'three',short:'Three'},
     {name:'Katex (equation rendering support)',value:'katex',checked:true,short:'Katex'},
     {name:'D3 (popular library for creating visualisations)',value:'d3',short:'D3'},
-    {name:'p5.js (legacy library for 2D graphics',value:'p5',short:'p5.js'}
+    {name:'p5.js (legacy library for 2D graphics',value:'p5',short:'p5.js'},
+    {name:'Math.js (Mathematical computation library)',value:'mathjs',short:'math.js'}
 ]
 const legacyChoices = [
     {name:"Basic legacy template with no VueJS",value:"basic",short:"Basic Template"},

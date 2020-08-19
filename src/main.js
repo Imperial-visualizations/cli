@@ -133,27 +133,35 @@ export async function createProject(options){
         console.log('%s Object state:', INFO);
         console.log(options)
     }
-    if(options.template !== 'legacy'){
-        options.eslint = options.additionalModules.indexOf('eslint') > -1
-        options.babel = options.additionalModules.indexOf('babel') > -1
+    try{
+        if(options.template !== 'legacy'){
+            options.eslint = options.additionalModules.indexOf('eslint') > -1
+            options.babel = options.additionalModules.indexOf('babel') > -1
+            options.katex = options.additionalModules.indexOf('katex') > -1 
+        }
+        switch(options.template){
+            case 'node':
+                options.templateDir = await getTemplateDir('../../templates/node')
+                break;
+            case 'script':
+                options.templateDir = await getTemplateDir('../../templates/script')
+                break;
+            case 'legacy':
+                if(options.legacyTempVersion === 'basic'){
+                    options.templateDir = await getTemplateDir('../../templates/legacy/basic')
+                }else if(options.legacyTempVersion === 'advanced'){
+                    options.templateDir = await getTemplateDir('../../templates/legacy/advanced')
+                }
+                break;
+            default:
+                console.log('%s Something has gone very wrong. Quitting...',ERROR);
+                process.exit(1);
+        }
     }
-    switch(options.template){
-        case 'node':
-            options.templateDir = await getTemplateDir('../../templates/node')
-            break;
-        case 'script':
-            options.templateDir = await getTemplateDir('../../templates/script')
-            break;
-        case 'legacy':
-            if(options.legacyTempVersion === 'basic'){
-                options.templateDir = await getTemplateDir('../../templates/legacy/basic')
-            }else if(options.legacyTempVersion === 'advanced'){
-                options.templateDir = await getTemplateDir('../../templates/legacy/advanced')
-            }
-            break;
-        default:
-            console.log('%s Something has gone very wrong. Quitting...',ERROR);
-            process.exit(1);
+    catch (err){
+        console.log('%s Something went wrong in the pre setup phase of the project',ERROR)
+        console.log('%s ' + err.stack,ERROR)
+        process.exit(2)
     }
     try {
         options = await (new listr(tasks)).run(options);

@@ -8,11 +8,14 @@
     <script src="https://unpkg.com/@impvis/components"></script>
     <link rel="stylesheet" href="https://unpkg.com/@impvis/components/dist/impvis-components.css"/>
     {{#each additionalModules}}
-        {{#if_eq this 'katex' }}
+        {{#if katex }}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
     <!-- The loading of KaTeX is deferred to speed up page rendering -->
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
-        {{/if_eq}}
+        {{/if}}
+        {{#else}}
+            <script defer src="https://unpkg.com/{{this}}"></script>
+        {{/else}}
     {{/each}}
 
     <style>
