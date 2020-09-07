@@ -3,7 +3,9 @@ module.exports = {
     pages:{
         {{#each pages}}
             {{squash this}}:{
-                entry:'src/{{this}}/main.js'
+                entry:'src/{{this}}/main.js',
+                title:'{{this}}',
+                
             },
         {{/each}}
     }
