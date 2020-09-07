@@ -14,6 +14,11 @@ require('yargs')
         type:'boolean',
         describe:'Use default configuration'
     })
+    .option('noRollback',{
+        default:false,
+        type:'boolean',
+        describe:'Do not rollback configuration on error'
+    })
     .help('h')
     .alias('h','help')
     .usage("Usage: $0 <project-name> [options]")

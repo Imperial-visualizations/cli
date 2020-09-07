@@ -66,6 +66,20 @@ async function configurationPrompt(options){
             message:'Please select additional modules that you wish to enable for this project:',
             choices: (answers) =>  additionalModules.filter(m => !(m.nodeOnly && answers.template !== 'node')),
             when: (answers) => answers.template !== 'legacy'
+        },
+        {
+            type:'confirm',
+            name:'isMPA',
+            message:'Do you want to create a multi-page visualisation?',
+            default:false,
+            when: (answers) => answers.template === 'node'
+        },
+        {
+            type:'input',
+            name:'pages',
+            message:'Enter names of the visualisation pages that you want to create seperated by commas:',
+            when: (answers) => answers.isMPA,
+            filter: (input) => input.split(',').map(str=> str.trim())
         }
     ];
     if(!options.git){
@@ -82,7 +96,10 @@ async function configurationPrompt(options){
         template: options.template || answers.template,
         git: options.git || answers.git,
         additionalModules: options.additionalModules || answers.additionalModules,
-        legacyTempVersion: options.legacyTempVersion || answers.legacyTempVersion
+        legacyTempVersion: options.legacyTempVersion || answers.legacyTempVersion,
+        isMPA: options.isMPA || answers.isMPA,
+        pages: options.pages || answers.pages
+
     }
 
 }

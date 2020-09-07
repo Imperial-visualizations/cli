@@ -7,6 +7,7 @@ import chalk from 'chalk';
 import Handlebars from 'handlebars'
 import rimraf from 'rimraf';
 import listr from 'listr';
+import { options } from 'yargs';
 
 const access = promisify(fs.access);
 const mkdir = promisify(fs.mkdir)
@@ -14,7 +15,7 @@ const mkdir = promisify(fs.mkdir)
 const copy = promisify(ncp);
 const open = promisify(fs.readFile);
 const write = promisify(fs.writeFile);
-
+const deleteFile = promisify(fs.unlink);
 
 const INFO = chalk.bold.blue('INFO');
 const ERROR = chalk.bold.red('ERROR')
@@ -38,7 +39,25 @@ const tasks = [
         title:"Copy project files",
         task: async (ctx) => {
             await copyTemplateFiles(ctx);
-            process.chdir(ctx.targetDir); 
+            if(ctx.isMPA){
+                await deleteFile(`${ctx.targetDir}/src/App.vue`)
+                await deleteFile(`${ctx.targetDir}/src/main.js`)
+                for(let i = 0; i < ctx.pages.length; i++){
+                    await mkdir(`${ctx.targetDir}/src/${ctx.pages[i]}`)
+                    await copy(`${ctx.templateDir}-additional/page_template/Page.vue`,`${ctx.targetDir}/src/${ctx.pages[i]}/${ctx.pages[i]}.vue`)
+                    await copy(`${ctx.templateDir}-additional/page_template/main.js`,`${ctx.targetDir}/src/${ctx.pages[i]}/main.js`)
+                    await renderFile({...ctx,pageName:ctx.pages[i]},`src/${ctx.pages[i]}/${ctx.pages[i]}.vue`)
+                    await renderFile({...ctx,pageName:ctx.pages[i]},`src/${ctx.pages[i]}/main.js`)
+                    if(ctx.verbose){
+                        console.log('%s Copied '+ctx.pages[i]+ ' page to project',INFO)
+                    }
+                }
+                await copy(`${ctx.templateDir}-additional/vue.config.js`,`${ctx.targetDir}/vue.config.js`)
+                await renderFile(ctx,'vue.config.js')
+            }
+            process.chdir(ctx.targetDir);
+            
+             
         }
     },
     {
@@ -49,9 +68,11 @@ const tasks = [
     {
         title:"Install core project dependencies",
         enabled: (ctx) => ctx.template == 'node',
-        task: async (ctx) => {
+        task: async (ctx,task) => {
             await renderFile(ctx,'package.json') //Render package json
-            const {stdout} = await execa('npm',['install'])
+            const result = execa('npm',['install'])
+            await result
+
 
         }
     },
@@ -93,6 +114,9 @@ Handlebars.registerHelper("if_eq",function(a,b,opts) {
         return opts.inverse(this);
     }
 });
+Handlebars.registerHelper("squash",function (str){
+    return str.toLowerCase().replace(/ /g,"_");
+})
 
 async function copyTemplateFiles(options){
     return copy(options.templateDir,options.targetDir,{
@@ -170,6 +194,9 @@ export async function createProject(options){
         if(options.verbose){
             console.log('%s Current options state:',INFO);
             console.log(options);
+        }
+        if(options.noRollback){
+            process.exit(1);
         }
         console.log('%s Aborting. Rolling back changes...',ERROR)
         process.chdir(__dirname);
