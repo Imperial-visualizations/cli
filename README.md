@@ -38,7 +38,7 @@ This template is recommended for people new to, or just getting started with Vue
 ### Installing additional packages 
 Installing additional packages for this template is not as convienent as using the Node template however is still relatively simple. The *UNPKG* repository can be used to quickly retrive a valid URL for any library that is located on NPM, and as such additional dependencies can be added to the head section of the HTML file by writing:
 ```html
-	<script defer src="https://unpkg.com/<my-package-name>/@version-number
+	<script defer src="https://unpkg.com/<my-package-name>/@version-number></script>
 ```
 You may need to read the documenation of the library you are importing to see if there are any additional files such as CSS files that also need to be imported.
 ## Legacy templates (Basic & Advanced)
