@@ -29,7 +29,6 @@ require('yargs')
         describe:'Use verbose mode'
     })
 },(argv) => {
-    require = require("esm")(module);
-    require('../src/cli.js').cli(argv);
+    require('../src/cli.js')(argv);
 })
 .argv;

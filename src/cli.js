@@ -1,23 +1,23 @@
-import inquirer from 'inquirer';
-import yargs from 'yargs';
-import chalk from 'chalk';
-import pjson from '../package.json';
-import {createProject} from './main.js';
-import execa from 'execa';
-import compare from 'compare-versions';
-import boxen from 'boxen';
+const inquirer = require('inquirer')
+const chalk = require('chalk')
+const pjson = require('../package.json')
+const createProject = require('./main.js');
+const execa = require('execa');
+const compare = require('compare-versions');
+const boxen = require('boxen');
 
-export async function checkForUpdates(){
+async function checkForUpdates(){
     let {stdout} = await execa('npm',['view','@impvis/cli','version'])
     if( compare(stdout,pjson.version) > 0){
         console.log(boxen(chalk.magenta.bold("A new version of @impvis/cli is available: ") + chalk.underline(`${pjson.version} -> ${stdout}`) +'\n' + chalk.blue('Run npm update -g @impvis/cli to update to latest version!'),{padding:1}))
     }
 }
 
-export async function cli(argv){
+module.exports = async function cli(argv){
     console.clear();
     await checkForUpdates();
     console.log(chalk.bold('✨ Imperial Visualisations CLI') + chalk.yellow(' v' +pjson.version))
+    console.log("RELOADED");
     console.log('🎨 ' + chalk.yellow.bold("Creating Project >> ") + chalk.underline(argv.projectName) + "\n");
     let options = await configurationPrompt(argv);
     createProject(options);

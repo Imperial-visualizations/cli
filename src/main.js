@@ -1,13 +1,12 @@
-import {promisify} from 'util';
-import fs from 'fs';
-import ncp from 'ncp';
-import path from 'path';
-import execa from 'execa';
-import chalk from 'chalk';
-import Handlebars from 'handlebars'
-import rimraf from 'rimraf';
-import listr from 'listr';
-import { options } from 'yargs';
+const {promisify} = require('util')
+const fs = require('fs')
+const ncp = require('ncp')
+const path = require('path')
+const execa = require('execa')
+const chalk = require('chalk')
+const Handlebars = require('handlebars')
+const rimraf = require('rimraf')
+const listr = require('listr')
 
 const access = promisify(fs.access);
 const mkdir = promisify(fs.mkdir)
@@ -141,14 +140,14 @@ async function getTemplateDir(localTemplateDir){
     return templateDir;
 }
 
-export async function renderFile(options,file='index.html'){
+async function renderFile(options,file='index.html'){
         let indexFile = path.join(options.targetDir,file);
         let content = await open(indexFile,'utf-8')
     
         await write( indexFile,Handlebars.compile(content)(options));
 }
 
-export async function createProject(options){
+module.exports = async function createProject(options){
     if(options.verbose){
         console.log('%s Object state:', INFO);
         console.log(options)
