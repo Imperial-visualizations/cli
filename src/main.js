@@ -82,11 +82,7 @@ const tasks = [
         task: async (ctx,task) => {
             for(let i = 0; i < ctx.additionalModules.length; i++){
                 task.output = `(${i+1}/${ctx.additionalModules.length}) Installing ${ctx.additionalModules[i]}`
-                if(ctx.additionalModules[i] == 'three'){
-                    await execa('npm',['install','@impvis/threejscomponents'])
-                    await execa('npm',['install','three'])
-                }
-                else if(ctx.additionalModules[i] == 'eslint'){
+                if(ctx.additionalModules[i] == 'eslint'){
                     if(ctx.babel){
                         eslintInstall.push('babel-eslint')
                     }

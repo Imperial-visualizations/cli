@@ -32,8 +32,8 @@ const templateChoices =[
 const additionalModules = [
     {name:'ESLint + Vue Plugin (Linting)',value:'eslint',short:"ESLint",checked:true,nodeOnly:true},
     {name:'Babel (preprocessor for backwards compatiblity)',value:'babel',short:"Babel",checked:true,nodeOnly:true},
-    {name:'Three.js (3D graphics support)', value:'three',short:'Three'},
-    {name:'Katex (equation rendering support)',value:'katex',checked:true,short:'Katex'},
+    {name:'Three.js (3D graphics support)', value:'@impvis/components-three',short:'Three'},
+    {name:'Katex (equation rendering support)',value:'@impvis/components-katex',checked:true,short:'Katex'},
     {name:'D3 (popular library for creating visualisations)',value:'d3',short:'D3'},
     {name:'p5.js (legacy library for 2D graphics',value:'p5',short:'p5.js'},
     {name:'Math.js (Mathematical computation library)',value:'mathjs',short:'math.js'}
@@ -79,7 +79,8 @@ async function configurationPrompt(options){
             name:'pages',
             message:'Enter names of the visualisation pages that you want to create seperated by commas:',
             when: (answers) => answers.isMPA,
-            filter: (input) => input.split(',').map(str=> str.trim())
+            filter: (input) => input.split(',').map(str=> str.trim()),
+            validate:(input) => input.split(',').length <= 1 
         }
     ];
     if(!options.git){
