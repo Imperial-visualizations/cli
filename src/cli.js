@@ -9,7 +9,7 @@ const boxen = require('boxen');
 async function checkForUpdates(){
     let {stdout} = await execa('npm',['view','@impvis/cli','version'])
     if( compare(stdout,pjson.version) > 0){
-        console.log(boxen(chalk.magenta.bold("A new version of @impvis/cli is available: ") + chalk.underline(`${pjson.version} -> ${stdout}`) +'\n' + chalk.blue('Run npm update -g @impvis/cli to update to latest version!'),{padding:1}))
+        console.log(boxen(chalk.magenta.bold("A new version of @impvis/cli is available: ") + chalk.underline(`${pjson.version} -> ${stdout}`) +'\n' + chalk.blue('Run npm install -g @impvis/cli to update to latest version!'),{padding:1}))
     }
 }
 
@@ -17,7 +17,6 @@ module.exports = async function cli(argv){
     console.clear();
     await checkForUpdates();
     console.log(chalk.bold('✨ Imperial Visualisations CLI') + chalk.yellow(' v' +pjson.version))
-    console.log("RELOADED");
     console.log('🎨 ' + chalk.yellow.bold("Creating Project >> ") + chalk.underline(argv.projectName) + "\n");
     let options = await configurationPrompt(argv);
     createProject(options);
