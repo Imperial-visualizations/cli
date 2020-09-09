@@ -21,7 +21,7 @@ const templateChoices =[
 const additionalModules = [
     {name:'ESLint + Vue Plugin (Linting)',value:'eslint',short:"ESLint",checked:true,nodeOnly:true},
     {name:'Babel (preprocessor for backwards compatiblity)',value:'babel',short:"Babel",checked:true,nodeOnly:true},
-    {name:'Three.js (3D graphics support)', value:'@impvis/components-three',short:'Three'},
+    {name:'Three.js (3D graphics support)', value:'@impvis/components-threejs',short:'Three'},
     {name:'Katex (equation rendering support)',value:'@impvis/components-katex',checked:true,short:'Katex'},
     {name:'D3 (popular library for creating visualisations)',value:'d3',short:'D3'},
     {name:'p5.js (legacy library for 2D graphics',value:'p5',short:'p5.js'},
