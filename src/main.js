@@ -39,8 +39,7 @@ const tasks = [
         task: async (ctx) => {
             await copyTemplateFiles(ctx);
             if(ctx.isMPA){
-                await deleteFile(`${ctx.targetDir}/src/App.vue`)
-                await deleteFile(`${ctx.targetDir}/src/main.js`)
+                await copy(`${ctx.templateDir}-additional/src`,`${ctx.targetDir}/src`)
                 for(let i = 0; i < ctx.pages.length; i++){
                     await mkdir(`${ctx.targetDir}/src/${ctx.pages[i]}`)
                     await copy(`${ctx.templateDir}-additional/page_template/Page.vue`,`${ctx.targetDir}/src/${ctx.pages[i]}/${ctx.pages[i]}.vue`)
