@@ -13,16 +13,6 @@ async function checkForUpdates(){
     }
 }
 
-module.exports = async function cli(argv){
-    console.clear();
-    await checkForUpdates();
-    console.log(chalk.bold('✨ Imperial Visualisations CLI') + chalk.yellow(' v' +pjson.version))
-    console.log('🎨 ' + chalk.yellow.bold("Creating Project >> ") + chalk.underline(argv.projectName) + "\n");
-    let options = await configurationPrompt(argv);
-    createProject(options);
-}
-
-
 const templateChoices =[
     {name:'Standard project using Node.js backend (recommended)',value:'node',short:'Node project'},
     {name:'Standard project using <script> include',value:'script',short:'<script> include project'},
@@ -102,4 +92,13 @@ async function configurationPrompt(options){
 
     }
 
+}
+
+module.exports = async function cli(argv){
+    console.clear();
+    await checkForUpdates();
+    console.log(chalk.bold('✨ Imperial Visualisations CLI') + chalk.yellow(' v' +pjson.version))
+    console.log('🎨 ' + chalk.yellow.bold("Creating Project >> ") + chalk.underline(argv.projectName) + "\n");
+    let options = await configurationPrompt(argv);
+    createProject(options);
 }
