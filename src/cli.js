@@ -68,8 +68,8 @@ async function configurationPrompt(options){
             name:'pages',
             message:'Enter names of the visualisation pages that you want to create seperated by commas:',
             when: (answers) => answers.isMPA,
-            filter: (input) => input.split(',').map(str=> str.trim()),
-            validate:(input) => input.split(',').length <= 1 
+            validate: (input) => (input.length > 1)? true : 'Please enter at least 2 items',
+            filter: (input) => input.split(',').map(str=> str.trim()).filter( str => str.length > 0),
         }
     ];
     if(!options.git){
