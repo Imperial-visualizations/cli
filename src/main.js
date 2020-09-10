@@ -38,24 +38,35 @@ const tasks = [
         title:"Copy project files",
         task: async (ctx) => {
             await copyTemplateFiles(ctx);
-            if(ctx.isMPA){
-                await copy(`${ctx.templateDir}-additional/src`,`${ctx.targetDir}/src`)
-                for(let i = 0; i < ctx.pages.length; i++){
-                    await mkdir(`${ctx.targetDir}/src/${ctx.pages[i]}`)
-                    await copy(`${ctx.templateDir}-additional/page_template/Page.vue`,`${ctx.targetDir}/src/${ctx.pages[i]}/${ctx.pages[i]}.vue`)
-                    await copy(`${ctx.templateDir}-additional/page_template/main.js`,`${ctx.targetDir}/src/${ctx.pages[i]}/main.js`)
-                    await renderFile({...ctx,pageName:ctx.pages[i]},`src/${ctx.pages[i]}/${ctx.pages[i]}.vue`)
-                    await renderFile({...ctx,pageName:ctx.pages[i]},`src/${ctx.pages[i]}/main.js`)
-                    if(ctx.verbose){
-                        console.log('%s Copied '+ctx.pages[i]+ ' page to project',INFO)
-                    }
+            process.chdir(ctx.targetDir);    
+        }
+    },
+    {
+        title:"Generate pages",
+        task: async (ctx) => {
+            await copy(`${ctx.templateDir}-additional/src`,`${ctx.targetDir}/src`)
+            for(let i = 0; i < ctx.pages.length; i++){
+                await mkdir(`${ctx.targetDir}/src/${ctx.pages[i]}`)
+                await copy(`${ctx.templateDir}-additional/page_template/Page.vue`,`${ctx.targetDir}/src/${ctx.pages[i]}/${ctx.pages[i]}.vue`)
+                await copy(`${ctx.templateDir}-additional/page_template/main.js`,`${ctx.targetDir}/src/${ctx.pages[i]}/main.js`)
+                await renderFile({...ctx,pageName:ctx.pages[i]},`src/${ctx.pages[i]}/${ctx.pages[i]}.vue`)
+                await renderFile({...ctx,pageName:ctx.pages[i]},`src/${ctx.pages[i]}/main.js`)
+                if(ctx.verbose){
+                    console.log('%s Copied '+ctx.pages[i]+ ' page to project',INFO)
                 }
-                await copy(`${ctx.templateDir}-additional/vue.config.js`,`${ctx.targetDir}/vue.config.js`)
-                await renderFile(ctx,'vue.config.js')
             }
-            process.chdir(ctx.targetDir);
-            
-             
+            await copy(`${ctx.templateDir}-additional/vue.config.js`,`${ctx.targetDir}/vue.config.js`)
+            await renderFile(ctx,'vue.config.js')
+            await renderFile(ctx,'package.json')
+        },
+        enabled: (ctx) => ctx.isMPA
+    },
+    {
+        title:"Generate core files",
+        enabled: (ctx) => ctx.template === 'node' && !ctx.isMPA,
+        task: async (ctx) => {
+            await renderFile(ctx,'src/main.js')
+            await renderFile(ctx,'package.json')
         }
     },
     {
@@ -67,11 +78,8 @@ const tasks = [
         title:"Install core project dependencies",
         enabled: (ctx) => ctx.template == 'node',
         task: async (ctx,task) => {
-            await renderFile(ctx,'package.json') //Render package json
             const result = execa('npm',['install'])
             await result
-
-
         }
     },
     {
@@ -155,7 +163,8 @@ module.exports = async function createProject(options){
         if(options.template !== 'legacy'){
             options.eslint = options.additionalModules.indexOf('eslint') > -1
             options.babel = options.additionalModules.indexOf('babel') > -1
-            options.katex = options.additionalModules.indexOf('katex') > -1 
+            options.katex = options.additionalModules.indexOf('@impvis/components-katex') > -1 
+            options.three = options.additionalModules.indexOf('@impvis/components-threejs') > -1
         }
         switch(options.template){
             case 'node':
