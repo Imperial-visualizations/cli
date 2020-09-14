@@ -7,8 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "@impvis/create-impvis": "./bin/create-impvis.js",
-    "create-impvis": "./bin/create-impvis.js"
+    "impvis": "./bin/impvis.js"
   },
   "keywords": [
     "cli",

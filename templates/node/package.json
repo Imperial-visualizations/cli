@@ -22,6 +22,15 @@
         "vue-template-compiler": "^2.6.11",
         "@vue/cli-service":"^4.5.3",
         "archiver":"^5.0.2"
+    },
+    "impvisConfig":{
+      "three":{{three}},
+      "babel":{{babel}},
+      "eslint":{{eslint}},
+      "katex":{{katex}}
+      {{#if isMPA}}
+      ,"pages":{{pages}}
+      {{/if}}
     }
     {{#if eslint}}
     ,"eslintConfig": {

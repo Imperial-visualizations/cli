@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const fs = require('fs')
-const {promisfy} = require('util')
 const vue_config = require('./vue.config.js')
 const archiver = require('archiver')
 const pJson = require('./package.json')
