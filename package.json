@@ -1,13 +1,14 @@
 {
   "name": "@impvis/cli",
-  "version": "0.8.7",
+  "version": "0.9.0-beta1",
   "description": "The Command Line Interface (CLI) to automatically create templates for the Imperial Visualisations project!",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "impvis": "./bin/impvis.js"
+    "impvis": "./bin/impvis.js",
+    "create-impvis": "./bin/create-impvis.sh"
   },
   "keywords": [
     "cli",
@@ -21,6 +22,7 @@
     "compare-versions": "^3.6.0",
     "execa": "^4.0.3",
     "handlebars": "^4.7.6",
+    "http-server": "^0.12.3",
     "inquirer": "^7.3.3",
     "listr": "^0.14.3",
     "ncp": "^2.0.0",

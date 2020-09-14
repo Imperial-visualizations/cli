@@ -21,7 +21,8 @@
     "devDependencies": {
         "vue-template-compiler": "^2.6.11",
         "@vue/cli-service":"^4.5.3",
-        "archiver":"^5.0.2"
+        "archiver":"^5.0.2",
+        "chalk":"^4.1.0"
     },
     "impvisConfig":{
       "three":{{three}},
@@ -29,7 +30,11 @@
       "eslint":{{eslint}},
       "katex":{{katex}}
       {{#if isMPA}}
-      ,"pages":{{pages}}
+      ,"pages":[
+        {{#each pages}}
+            "{{this}}"{{#unless @last}}, {{/unless}}
+        {{/each}}
+        ]
       {{/if}}
     }
     {{#if eslint}}

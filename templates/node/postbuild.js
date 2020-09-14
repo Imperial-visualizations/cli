@@ -3,6 +3,12 @@ const fs = require('fs')
 const vue_config = require('./vue.config.js')
 const archiver = require('archiver')
 const pJson = require('./package.json')
+const chalk = require('chalk')
+
+INFO = chalk.blue.bold("INFO")
+ERROR = chalk.red.bold("ERROR")
+DONE = chalk.green.bold("DONE")
+console.log("%s Creating visualisation .zip file(s) ready for upload!",INFO);
 
 if(fs.existsSync('dist/')){
     if(typeof vue_config.pages !== 'undefined'){
@@ -11,13 +17,18 @@ if(fs.existsSync('dist/')){
             let output = fs.createWriteStream(page + '.zip')
             let archive = archiver('zip')
             archive.on('error',function(err){
-                throw err;
+                console.log(`%s ` + err.stack,ERROR)
+                process.exit(1)
             });
+            output.on('close',() =>{
+                console.log(`%s File "`+page+`.zip" has been written`,INFO)
+            })
             archive.pipe(output)
             archive.glob(`dist/**/${page}*.{css,html,js,js.map}`)
             archive.glob('dist/**/chunk-vendors*')
             archive.glob('dist/!(*page*|*index*)')
             archive.finalize()
+            
         }
     }else{
         // No pages, just zip the dist folder
@@ -30,6 +41,12 @@ if(fs.existsSync('dist/')){
         archive.directory('dist/', false)
         archive.finalize()
     }
+    
 }else{
-    console.log('ERROR: Dir folder does not exist, did the build complete succesfully?')
+    console.log('%s Dir folder does not exist, did the build complete succesfully?',ERROR)
 }
+process.on('beforeExit',(code)=>{
+    if(code === 0){
+        console.log('%s Files have been created!',DONE);
+    }
+})
