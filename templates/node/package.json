@@ -5,6 +5,7 @@
     "scripts": {
       "serve": "vue-cli-service serve",
       "build": "vue-cli-service build",
+      "postbuild": "./postbuild.js",
       "lint": "vue-cli-service lint"
     },
     "keywords": [
@@ -19,7 +20,8 @@
     },
     "devDependencies": {
         "vue-template-compiler": "^2.6.11",
-        "@vue/cli-service":"^4.5.3"
+        "@vue/cli-service":"^4.5.3",
+        "archiver":"^5.0.2"
     }
     {{#if eslint}}
     ,"eslintConfig": {
