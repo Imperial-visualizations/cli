@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Imperial-visualizations/create-impvis.git"
+    "url": "https://github.com/Imperial-visualizations/cli.git"
   },
   "files": [
     "src/*",
