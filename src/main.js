@@ -20,12 +20,6 @@ const INFO = chalk.bold.blue('INFO');
 const ERROR = chalk.bold.red('ERROR')
 const DONE = chalk.bold.green("DONE")
 
-const eslintInstall = [
-    '@vue/cli-plugin-eslint',
-    'eslint',
-    'eslint-plugin-vue'
-]
-
 const tasks = [
     {
         title:"Create project folder",
@@ -55,7 +49,6 @@ const tasks = [
                     console.log('%s Copied '+ctx.pages[i]+ ' page to project',INFO)
                 }
             }
-            await copy(`${ctx.templateDir}-additional/vue.config.js`,`${ctx.targetDir}/vue.config.js`)
             await renderFile(ctx,'vue.config.js')
             await renderFile(ctx,'package.json')
         },
@@ -66,6 +59,7 @@ const tasks = [
         enabled: (ctx) => ctx.template === 'node' && !ctx.isMPA,
         task: async (ctx) => {
             await renderFile(ctx,'src/main.js')
+            await renderFile(ctx,'vue.config.js')
             await renderFile(ctx,'package.json')
         }
     },
@@ -87,18 +81,19 @@ const tasks = [
         enabled: (ctx) => ctx.template == 'node' && ctx.additionalModules.length > 0,
         task: async (ctx,task) => {
             for(let i = 0; i < ctx.additionalModules.length; i++){
-                task.output = `(${i+1}/${ctx.additionalModules.length}) Installing ${ctx.additionalModules[i]}`
-                if(ctx.additionalModules[i] == 'eslint'){
-                    if(ctx.babel){
-                        eslintInstall.push('babel-eslint')
+                task.output = `(${i+1}/${ctx.additionalModules.length}) Installing ${ctx.additionalModules[i].name || ctx.additionalModules[i]}`
+                if(ctx.additionalModules[i].d_pkgs){
+                    if(ctx.additionalModules[i].name === 'babel' && ctx.eslint){
+                        await execa('npm',['install','-D','babel-eslint'])
                     }
-                    await execa('npm',['install','-D', ...eslintInstall])
+                    await execa('npm',['install','-D',...ctx.additionalModules[i].d_pkgs])
                 }
-                else if(ctx.additionalModules[i] == 'babel'){
-                    await execa('npm',['install','-D','babel','@vue/cli-plugin-babel'])
-                } else{
+                if(ctx.additionalModules[i].pkgs){
+                    await execa('npm',['install',...ctx.additionalModules[i].pkgs])
+                }
+                if(typeof ctx.additionalModules[i] === 'string'){
                     await execa('npm',['install',ctx.additionalModules[i]])
-                }
+                }  
             }
         }
     },
@@ -155,16 +150,17 @@ async function renderFile(options,file='index.html'){
 }
 
 module.exports = async function createProject(options){
+    const additionalModuleNames = options.additionalModules.map( (x) => x.name || x)
     if(options.verbose){
         console.log('%s Object state:', INFO);
         console.log(options)
     }
     try{
         if(options.template !== 'legacy'){
-            options.eslint = options.additionalModules.indexOf('eslint') > -1
-            options.babel = options.additionalModules.indexOf('babel') > -1
-            options.katex = options.additionalModules.indexOf('@impvis/components-katex') > -1 
-            options.three = options.additionalModules.indexOf('@impvis/components-threejs') > -1
+            options.eslint = additionalModuleNames.indexOf('eslint') > -1
+            options.babel = additionalModuleNames.indexOf('babel') > -1
+            options.katex = additionalModuleNames.indexOf('katex') > -1 
+            options.three = additionalModuleNames.indexOf('threejs') > -1
         }
         switch(options.template){
             case 'node':

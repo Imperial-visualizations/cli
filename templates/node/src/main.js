@@ -5,7 +5,6 @@ import "@impvis/components/dist/impvis-components.css"
 // TODO: Add in automated plugin uses for three + katex
 {{#if katex}}
 import ImpVisKatex from "@impvis/components-katex"
-import "@impvis/components-katex/dist/impvis-components-katex.css"
 {{/if}}
 
 {{#if three}}

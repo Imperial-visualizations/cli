@@ -4,7 +4,6 @@ import '@impvis/components/dist/impvis-components.css'
 import {{squash pageName}} from './{{pageName}}.vue'
 {{#if katex}}
 import ImpVisKatex from "@impvis/components-katex"
-import "@impvis/components-katex/dist/impvis-components-katex.css"
 {{/if}}
 {{#if three}}
 import ImpVisThree from "@impvis/components-three"

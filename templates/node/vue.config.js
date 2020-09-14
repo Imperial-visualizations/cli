@@ -1,4 +1,5 @@
 module.exports = {
+    publicPath:'./',
     {{#if isMPA}}
     pages:{
         index:{
