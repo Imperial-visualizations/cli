@@ -5,7 +5,7 @@
     "scripts": {
       "serve": "vue-cli-service serve",
       "build": "vue-cli-service build",
-      "postbuild": "./postbuild.js",
+      "postbuild": "node ./postbuild.js",
       "lint": "vue-cli-service lint"
     },
     "keywords": [
