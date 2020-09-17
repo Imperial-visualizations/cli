@@ -194,6 +194,7 @@ module.exports = async function cli(argv){
     await checkForUpdates();
     console.log(chalk.bold('✨ Imperial Visualisations CLI') + chalk.yellow(' v' +pjson.version))
     console.log('🎨 ' + chalk.yellow.bold("Creating Project >> ") + chalk.underline(argv.projectName) + "\n");
+    console.log('Press' + chalk.underline('Ctrl+C') + 'to quit this configuration prompt')
     let options = await configurationPrompt(argv);
     const additionalModuleNames = options.additionalModules.map( (x) => x.name || x)
     if(options.verbose){
