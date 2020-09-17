@@ -1,6 +1,8 @@
 <template>
     <div id="{{pageName}}">
-        This is {{pageName}}
+        <iv-visualisation :title="name">
+            This is page {{pageName}}
+        </iv-visualisation>
     </div>
 </template>
 <script>

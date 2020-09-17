@@ -1,14 +1,13 @@
 <template>
     <div>
-        <iv-title-bar> </iv-title-bar>
-        <iv-visalisation>
+        <iv-visualisation :title="projectName">
             <div class="iv-welcome-message">
                 <img src='./assets/ImpVis-logo.png' alt="ImpVisLogo" height="50"/>
                 <h1> Welcome to Imperial Visualisations!</h1>
-                <p> Your project, {{projectName}} has succesfully been set up using a script tag import!</p>
+                <p> Your project, {{projectName}} has succesfully been set up!</p>
                 <p> There is a vue instance up and running!</p>
             </div>
-        </iv-visalisation>
+        </iv-visualisation>
     </div>
 </template>
 <script>
