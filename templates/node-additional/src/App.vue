@@ -39,6 +39,7 @@ body{
     justify-content: center;
     align-items: center;
     list-style: none;
+    flex-wrap:wrap;
 }
 #app li {
     margin: 15px 0 ;
