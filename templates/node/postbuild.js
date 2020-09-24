@@ -26,7 +26,7 @@ if(fs.existsSync('dist/')){
             archive.pipe(output)
             archive.glob(`dist/**/${page}*.{css,html,js,js.map}`)
             archive.glob('dist/**/chunk-vendors*')
-            archive.glob('dist/!(*page*|*index*)')
+            archive.glob('dist/**/!(*.html|*.css|*.js|*.js.map)')
             archive.finalize()
             
         }

@@ -1,6 +1,6 @@
 {
   "name": "@impvis/cli",
-  "version": "0.9.0-beta3",
+  "version": "1.0.0-beta1",
   "description": "The Command Line Interface (CLI) to automatically create templates for the Imperial Visualisations project!",
   "main": "index.js",
   "scripts": {
