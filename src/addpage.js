@@ -20,7 +20,6 @@ module.exports = async function(args){
     } 
     const nodeDir = await getTemplateDir('../../templates/node')
     const nodeAddDir = await getTemplateDir('../../templates/node-additional')
-    console.lo
     if(fs.existsSync('./package.json') && fs.existsSync('./vue.config.js')){
         const pJsonStr = await read('./package.json')
         const pJson = JSON.parse(pJsonStr)

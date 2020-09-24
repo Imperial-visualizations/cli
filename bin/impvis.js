@@ -38,10 +38,18 @@ require('yargs')
 .command('addpage <pageName>','Add page to existing multipage visualisation',(yargs)=>{
     yargs.positional('pageName',{
         type:'string',
-        describe:'Name of page to add visualisation'
+        describe:'Name of page to add to visualisation'
     })
 },(argv)=>{
     require('../src/addpage.js')(argv)
+})
+.command('removepage <pageName>','Remove an existing page from a visualisation',(yargs)=>{
+    yargs.positional('pageName',{
+        type:'string',
+        describe:'Name of page to remove from visualisation'
+    })
+},(argv) => {
+    require('../src/rmpage.js')(argv)
 })
 .command('serve [port]','Create a temp web server to host files in this directory. To be used with all none Node.js visualisations',(yars) =>{
     yargs.positional('port',{
@@ -52,6 +60,7 @@ require('yargs')
 },(argv) => {
     require('../src/serve.js')(argv)
 })
+
 .demandCommand()
 .help('h')
 .alias('h','help')
