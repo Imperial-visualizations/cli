@@ -14,7 +14,7 @@ export default {
     name:"{{squash pageName}}",
     data(){
         return {
-            pageName:{{pageName}}
+            pageName:"{{pageName}}"
         }
     }
 }
