@@ -12,10 +12,12 @@ console.log("%s Creating visualisation .zip file(s) ready for upload!",INFO);
 
 if(fs.existsSync('dist/')){
     if(typeof vue_config.pages !== 'undefined'){
+        
         for(let page of Object.keys(vue_config.pages)){
             if(page === 'index') continue; //Skip index page
-            let output = fs.createWriteStream(page + '.zip')
+            let output = fs.createWriteStream( page + '.zip')
             let archive = archiver('zip')
+
             archive.on('error',function(err){
                 console.log(`%s ` + err.stack,ERROR)
                 process.exit(1)
@@ -24,10 +26,13 @@ if(fs.existsSync('dist/')){
                 console.log(`%s File "`+page+`.zip" has been written`,INFO)
             })
             archive.pipe(output)
-            archive.glob(`dist/**/${page}*.{css,html,js,js.map}`)
-            archive.glob('dist/**/chunk-vendors*')
-            archive.glob('dist/**/!(*.html|*.css|*.js|*.js.map)')
+            process.chdir('./dist/')
+            archive.glob(`**/${page}*.{css,html,js,js.map}`)
+            archive.glob('**/chunk-vendors*')
+            archive.glob('**/chunk-common*')
+            archive.glob('**/!(*.html|*.css|*.js|*.js.map)')
             archive.finalize()
+            process.chdir('../')
             
         }
     }else{
