@@ -128,8 +128,8 @@ const tasks = [
                 await mkdir(`${ctx.targetDir}/src/${ctx.pages[i]}`)
                 await copy(`${ctx.templateDir}-additional/page_template/Page.vue`,`${ctx.targetDir}/src/${ctx.pages[i]}/${ctx.pages[i]}.vue`)
                 await copy(`${ctx.templateDir}-additional/page_template/main.js`,`${ctx.targetDir}/src/${ctx.pages[i]}/main.js`)
-                await renderFile({...ctx,pageName:ctx.pages[i]},`src/${ctx.pages[i]}/${ctx.pages[i]}.vue`)
-                await renderFile({...ctx,pageName:ctx.pages[i]},`src/${ctx.pages[i]}/main.js`)
+                await renderFile({...ctx,pageName:ctx.pages[i],page_number:i+1},`src/${ctx.pages[i]}/${ctx.pages[i]}.vue`)
+                await renderFile({...ctx,pageName:ctx.pages[i],page_number:i+1},`src/${ctx.pages[i]}/main.js`)
                 if(ctx.verbose){
                     console.log('%s Copied '+ctx.pages[i]+ ' page to project',INFO)
                 }
