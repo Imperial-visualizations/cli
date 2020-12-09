@@ -32,8 +32,8 @@ const additionalModules = [
         'eslint-plugin-vue'
     ]},short:"ESLint",checked:true,nodeOnly:true},
     {name:'Babel (preprocessor for backwards compatiblity)',value:{name:'babel',d_pkgs:['babel','@vue/cli-plugin-babel']},short:"Babel",checked:true,nodeOnly:true},
-    {name:'Three.js (3D graphics support)', value:{name:'three',pkgs:['three','@impvis/components-threejs']},short:'Three'},
-    {name:'Katex (equation rendering support)',value:{name:'katex',pkgs:['katex','@impvis/components-katex']},checked:true,short:'Katex'},
+    {name:'Three.js (3D graphics support)', value:{name:'three',pkgs:['@impvis/components-threejs']},short:'Three'},
+    {name:'Katex (equation rendering support)',value:{name:'katex',pkgs:['@impvis/components-katex']},checked:true,short:'Katex'},
     {name:'D3 (popular library for creating visualisations)',value:'d3',short:'D3'},
     {name:'p5.js (legacy library for 2D graphics',value:'p5',short:'p5.js'},
     {name:'Math.js (Mathematical computation library)',value:'mathjs',short:'math.js'}
